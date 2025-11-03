@@ -14,9 +14,12 @@ Symmetric Key generation
 
 AES encryption & decryption
 
+CSPRNG
 
 
 
 ## -= Nice to have =-
-
+Assymetric Key Gen
+- Diffie Hellman
 Panic Wipe Button
+Post Quantum Encryption
