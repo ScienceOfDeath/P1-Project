@@ -31,3 +31,9 @@ Time Wipe?
 GUI
 Websocket - Send data over nettet via terminal
 
+
+## -= Thrown out =-
+Certificate authentication
+- AES
+
+
