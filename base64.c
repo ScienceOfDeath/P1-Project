@@ -1,13 +1,14 @@
 #include <stdio.h>
+#include <stdint.h>
 #include <string.h>
 #include "base64.h"
 
 static const char b64_table[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
-int base64_encode(const unsigned char *in, int in_len, char *out) {
+int base64_encode(const uint8_t *in, int in_len, char *out) {
     int i, j = 0;
-    unsigned char a3[3];
-    unsigned char a4[4];
+    uint8_t a3[3];
+    uint8_t a4[4];
 
     for (i = 0; i < in_len;) {
         int k;
@@ -31,10 +32,10 @@ int base64_encode(const unsigned char *in, int in_len, char *out) {
     return j;
 }
 
-int base64_decode(const char *in, unsigned char *out) {
+int base64_decode(const char *in, uint8_t *out) {
     int in_len = strlen(in);
     int i = 0, j = 0;
-    unsigned char a3[3], a4[4];
+    uint8_t a3[3], a4[4];
     int k;
 
     while (i < in_len) {
