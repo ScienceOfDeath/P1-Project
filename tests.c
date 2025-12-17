@@ -29,7 +29,7 @@ static const uint8_t inverse_rijndael_galois_field[ROWS][COLUMNS] = {
 
 void testGaloisMultiplication(void)
 {
-    assert(galoisMultiplication(0x57, 0x13) == 0xFE); // from AES spec
+    assert(galoisMultiplication(0x57, 0x13) == 0xFE);
     assert(galoisMultiplication(0x02, 0x03) == 0x06);
     assert(galoisMultiplication(0xFF, 0x01) == 0xFF);
 
