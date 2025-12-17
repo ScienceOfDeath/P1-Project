@@ -477,7 +477,7 @@ void setKey(aes_context *context, const uint8_t *key)
 
 
 // Helper function that supplies aesEncryptBlock() with the correct parameters
-void encrypt(aes_context *context, char *plain_text, uint8_t *hex_text)
+void encrypt(aes_context *context, char *plain_text, uint8_t hex_text[16])
 {
 
     int plain_text_len = strlen(plain_text);
@@ -488,12 +488,12 @@ void encrypt(aes_context *context, char *plain_text, uint8_t *hex_text)
 
     for (int i = 0; i < context->blocks; i++)
     {
-        aesEncryptBlock(context, hex_text + i * 16);
+        aesEncryptBlock(context, &hex_text[i * 16]);
     }
 }
 
 // Helper function that supplies aesDecryptBlock() with the correct parameters
-void decrypt(aes_context *context, uint8_t *encrypted_text, int encrypted_len, uint8_t *plain_text)
+void decrypt(aes_context *context, uint8_t *encrypted_text, int encrypted_len, uint8_t plain_text[STATE_SIZE])
 {
     // Ciphertext length MUST be a multiple of 16
     if (encrypted_len % 16 != 0)
@@ -509,7 +509,7 @@ void decrypt(aes_context *context, uint8_t *encrypted_text, int encrypted_len, u
 
     for (int i = 0; i < context->blocks; i++)
     {
-        aesDecryptBlock(context, plain_text + i * 16);
+        aesDecryptBlock(context, &plain_text[i * STATE_SIZE]);
     }
 
     context->length = removePadding(plain_text, context->length);
