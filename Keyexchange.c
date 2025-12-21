@@ -277,18 +277,18 @@ char* run_server(){
     printf("--------------------------------------------------\n");
 
     // Derive Key
-    unsigned char derived_key[16];
+    unsigned char derived_key[32];
     derive_key(secret_str,derived_key);
 
     // Convert derived key to hex string for return
-    char *final_key_hex = (char*)OPENSSL_malloc(33);
+    char *final_key_hex = (char*)OPENSSL_malloc(65);
     if (!final_key_hex){
         handle_error("Memory allocation failed");
     }
-    for (int i = 0; i < 16; i++){
+    for (int i = 0; i < 32; i++){
         sprintf(final_key_hex + (i * 2), "%02X", derived_key[i]);
     }
-    final_key_hex[32] = '\0';
+    final_key_hex[64] = '\0';
 
     OPENSSL_free(secret_str); // free up the memory from the raw DH secret
 
@@ -430,18 +430,18 @@ char* run_client(){
     printf("--------------------------------------------------\n");
 
     // Derive Key
-    unsigned char derived_key[16];
+    unsigned char derived_key[32];
     derive_key(secret_str, derived_key);
 
     // Convert derived Key to Hex for return
-    char *final_key_hex = (char*)OPENSSL_malloc(33);
+    char *final_key_hex = (char*)OPENSSL_malloc(65);
     if (!final_key_hex) {
         handle_error("memory allocation failed");
     }
-    for (int i = 0; i < 16; i++){
+    for (int i = 0; i < 32; i++){
         sprintf(final_key_hex + (i * 2), "%02X", derived_key[i]);
     }
-    final_key_hex[32] = '\0';
+    final_key_hex[64] = '\0';
 
     OPENSSL_free(secret_str); // Free the raw DH secret
 
@@ -740,7 +740,7 @@ char* create_key_from_password(){
     char password[MAX_PASSWORD_LENGTH];
     scanf("%s", password);
 
-    unsigned char derived_key[16];
+    unsigned char derived_key[32];
     
     // Calculate required hex buffer size (2 hex chars per byte + null terminator)
     int pwd_len = strlen(password);
@@ -756,14 +756,14 @@ char* create_key_from_password(){
     free(password_hex);
 
     // Convert derived Key to Hex for return
-    char *final_key_hex = (char*)OPENSSL_malloc(33);
+    char *final_key_hex = (char*)OPENSSL_malloc(65);
     if (!final_key_hex) {
         handle_error("memory allocation failed");
     }
-    for (int i = 0; i < 16; i++){
+    for (int i = 0; i < 32; i++){
         sprintf(final_key_hex + (i * 2), "%02X", derived_key[i]);
     }
-    final_key_hex[32] = '\0';
+    final_key_hex[64] = '\0';
 
     return final_key_hex;
 }
@@ -797,13 +797,13 @@ void derive_key(const char* shared_secret, unsigned char* derived_key) {
     }
 
     printf("Deriving Key...\n");
-    if (EVP_KDF_derive(kctx, derived_key, 16, NULL) <= 0) {
+    if (EVP_KDF_derive(kctx, derived_key, 32, NULL) <= 0) {
         handle_error("HKDF key derivation failed");
     }
     EVP_KDF_CTX_free(kctx);
     
     printf("Derived Session Key (HKDF-SHA256): ");
-    for(int i = 0; i < 16; i++) printf("%02x", derived_key[i]);
+    for(int i = 0; i < 32; i++) printf("%02x", derived_key[i]);
     printf("\n");
 }
 
